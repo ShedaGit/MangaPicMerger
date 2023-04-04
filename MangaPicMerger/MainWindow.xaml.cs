@@ -116,7 +116,7 @@ namespace MangaPicMerger
                     Bitmap resultImage;
                     if (barBetweenImagesWhite.IsChecked == true || barBetweenImagesBlack.IsChecked == true)
                     {
-                        int sizeOfLine = int.Parse(tbSize.Text);
+                        int sizeOfLine = int.Parse(barBetweenImagesSize.Text);
 
                         Bitmap line = new Bitmap(sizeOfLine, Math.Max(imageLeft.Height, imageRight.Height));
 

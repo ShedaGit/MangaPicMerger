@@ -24,7 +24,7 @@
         <CheckBox x:Name="barBetweenImagesBlack" Content="Add black line" HorizontalAlignment="Left" Margin="20,620,0,0" VerticalAlignment="Top" TabIndex="5"/>
 
         <Label Content="Size of line:" Margin="20,570,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="tbSize" Text="50" Height="23" Margin="110,570,615,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2" TextAlignment="Center"/>
+        <TextBox x:Name="barBetweenImagesSize" Text="50" Height="23" Margin="110,570,615,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2" TextAlignment="Center"/>
 
     </Grid>
 </Window>
