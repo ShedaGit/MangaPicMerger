@@ -23,30 +23,44 @@ namespace MangaPicMerger
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg|All Files (*.*)|*.*";
-            dlg.RestoreDirectory = true;
-            dlg.Multiselect = true;
-
-            if (dlg.ShowDialog() == true)
+            try
             {
-                if (dlg.FileNames.Length > 1)
-                {
-                    imageLeft = new BitmapImage();
-                    imageLeft.BeginInit();
-                    imageLeft.UriSource = new Uri(dlg.FileNames[0]);
-                    imageLeft.EndInit();
-                    ImageViewerLeft.Source = imageLeft;
+                OpenFileDialog dlg = new OpenFileDialog();
+                dlg.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg|All Files (*.*)|*.*";
+                dlg.RestoreDirectory = true;
+                dlg.Multiselect = true;
 
-                    imageRight = new BitmapImage();
-                    imageRight.BeginInit();
-                    imageRight.UriSource = new Uri(dlg.FileNames[1]);
-                    imageRight.EndInit();
-                    ImageViewerRight.Source = imageRight;
+                if (dlg.ShowDialog() == true)
+                {
+                    if (dlg.FileNames.Length == 2)
+                    {
+                        imageLeft = new BitmapImage();
+                        imageLeft.BeginInit();
+                        imageLeft.UriSource = new Uri(dlg.FileNames[0]);
+                        imageLeft.EndInit();
+                        ImageViewerLeft.Source = imageLeft;
+
+                        imageRight = new BitmapImage();
+                        imageRight.BeginInit();
+                        imageRight.UriSource = new Uri(dlg.FileNames[1]);
+                        imageRight.EndInit();
+                        ImageViewerRight.Source = imageRight;
+                    }
+                    else
+                    {
+                        MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException || ex is IOException)
+                {
+                    MessageBox.Show("Operation cancelled by user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -70,91 +84,105 @@ namespace MangaPicMerger
                 return;
             }
 
-            Bitmap imageLeft = BitmapImage2Bitmap(this.imageLeft);
-            Bitmap imageRight = BitmapImage2Bitmap(this.imageRight);
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
-            sfd.FileName = "picture";
-            if (sfd.ShowDialog() == true)
+            try
             {
-                ImageFormat format = ImageFormat.Png;
-                string ext = Path.GetExtension(sfd.FileName);
+                Bitmap imageLeft = BitmapImage2Bitmap(this.imageLeft);
+                Bitmap imageRight = BitmapImage2Bitmap(this.imageRight);
 
-                switch (ext.ToLower())
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
+                sfd.FileName = "picture";
+                if (sfd.ShowDialog() == true)
                 {
-                    case ".jpg":
-                        format = ImageFormat.Jpeg;
-                        break;
-                    case ".png":
-                        format = ImageFormat.Png;
-                        break;
-                    default:
-                        MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
-                        return;
+                    ImageFormat format = ImageFormat.Png;
+                    string ext = Path.GetExtension(sfd.FileName);
+
+                    switch (ext.ToLower())
+                    {
+                        case ".jpg":
+                            format = ImageFormat.Jpeg;
+                            break;
+                        case ".png":
+                            format = ImageFormat.Png;
+                            break;
+                        default:
+                            MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return;
+                    }
+
+                    int height = imageLeft.Height > imageRight.Height ? imageLeft.Height : imageRight.Height;
+                    int width = imageLeft.Width + imageRight.Width;
+
+                    Bitmap resultImage;
+                    if (barBetweenImagesWhite.IsChecked == true || barBetweenImagesBlack.IsChecked == true)
+                    {
+                        int sizeOfLine = int.Parse(tbSize.Text);
+
+                        Bitmap line = new Bitmap(sizeOfLine, Math.Max(imageLeft.Height, imageRight.Height));
+
+                        resultImage = new Bitmap(width + sizeOfLine, height);
+
+
+                        if (barBetweenImagesWhite.IsChecked == true)
+                        {
+                            using (var g = Graphics.FromImage(line))
+                            {
+                                using (SolidBrush brush = new SolidBrush(System.Drawing.Color.White))
+                                {
+                                    g.FillRectangle(brush, 0, 0, line.Width, line.Height);
+                                }
+                            }
+
+                            using (var g = Graphics.FromImage(resultImage))
+                            {
+                                g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
+                                g.DrawImage(line, imageLeft.Width, 0);
+                                g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
+                            }
+                        }
+                        else if (barBetweenImagesBlack.IsChecked == true)
+                        {
+                            using (var g = Graphics.FromImage(line))
+                            {
+                                using (SolidBrush brush = new SolidBrush(System.Drawing.Color.Black))
+                                {
+                                    g.FillRectangle(brush, 0, 0, line.Width, line.Height);
+                                }
+                            }
+
+                            using (var g = Graphics.FromImage(resultImage))
+                            {
+                                g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
+                                g.DrawImage(line, imageLeft.Width, 0);
+                                g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        resultImage = new Bitmap(width, height);
+
+                        using (var g = Graphics.FromImage(resultImage))
+                        {
+                            g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
+                            g.DrawImage(imageRight, imageLeft.Width, 0, imageRight.Width, imageRight.Height);
+                        }
+                    }
+
+                    resultImage.Save(sfd.FileName, format);
+                    MessageBox.Show("Done!");
                 }
-
-                int height = imageLeft.Height > imageRight.Height ? imageLeft.Height : imageRight.Height;
-                int width = imageLeft.Width + imageRight.Width;
-
-                Bitmap resultImage;
-                if (barBetweenImagesWhite.IsChecked == true || barBetweenImagesBlack.IsChecked == true)
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException || ex is IOException)
                 {
-                    int sizeOfLine = int.Parse(tbSize.Text);
-
-                    Bitmap line = new Bitmap(sizeOfLine, Math.Max(imageLeft.Height, imageRight.Height));
-
-                    resultImage = new Bitmap(width + sizeOfLine, height);
-
-
-                    if (barBetweenImagesWhite.IsChecked == true)
-                    {
-                        using (var g = Graphics.FromImage(line))
-                        {
-                            using (SolidBrush brush = new SolidBrush(System.Drawing.Color.White))
-                            {
-                                g.FillRectangle(brush, 0, 0, line.Width, line.Height);
-                            }
-                        }
-
-                        using (var g = Graphics.FromImage(resultImage))
-                        {
-                            g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                            g.DrawImage(line, imageLeft.Width, 0);
-                            g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
-                        }
-                    }
-                    else if (barBetweenImagesBlack.IsChecked == true)
-                    {
-                        using (var g = Graphics.FromImage(line))
-                        {
-                            using (SolidBrush brush = new SolidBrush(System.Drawing.Color.Black))
-                            {
-                                g.FillRectangle(brush, 0, 0, line.Width, line.Height);
-                            }
-                        }
-
-                        using (var g = Graphics.FromImage(resultImage))
-                        {
-                            g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                            g.DrawImage(line, imageLeft.Width, 0);
-                            g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
-                        }
-                    }
+                    MessageBox.Show("Operation cancelled by user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    resultImage = new Bitmap(width, height);
-
-                    using (var g = Graphics.FromImage(resultImage))
-                    {
-                        g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                        g.DrawImage(imageRight, imageLeft.Width, 0, imageRight.Width, imageRight.Height);
-                    }
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-                resultImage.Save(sfd.FileName, format);
-                MessageBox.Show("Done!");
             }
         }
 
