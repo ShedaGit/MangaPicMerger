@@ -26,8 +26,7 @@ namespace MangaPicMerger
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            //dlg.InitialDirectory = "c:\\";
-            dlg.Filter = "Images (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png" + "|All Files (*.*)|*.*";
+            dlg.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg|All Files (*.*)|*.*";
             dlg.RestoreDirectory = true;
             dlg.Multiselect = true;
 
@@ -39,21 +38,18 @@ namespace MangaPicMerger
                     imageLeft.BeginInit();
                     imageLeft.UriSource = new Uri(dlg.FileNames[0]);
                     imageLeft.EndInit();
-                    //imageLeft.UriSource.ToString();
                     ImageViewerLeft.Source = imageLeft;
 
                     imageRight = new BitmapImage();
                     imageRight.BeginInit();
                     imageRight.UriSource = new Uri(dlg.FileNames[1]);
                     imageRight.EndInit();
-                    //imageLeft.UriSource.ToString();
                     ImageViewerRight.Source = imageRight;
                 }
                 else
                 {
-                    MessageBox.Show("You should choose 2 images.", "Oops!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-
             }
         }
 
