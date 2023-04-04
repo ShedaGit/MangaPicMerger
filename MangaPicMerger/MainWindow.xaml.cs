@@ -21,7 +21,7 @@ namespace MangaPicMerger
             this.DataContext = this;
         }
 
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private void OnBrowseButtonClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace MangaPicMerger
             }
         }
 
-        private void SwitchButton_Click(object sender, RoutedEventArgs e)
+        private void OnSwitchButtonClick(object sender, RoutedEventArgs e)
         {
             BitmapImage bitmap = new BitmapImage();
             bitmap = imageRight;
@@ -76,7 +76,7 @@ namespace MangaPicMerger
             ImageViewerRight.Source = imageRight;
         }
 
-        private void MergeButton_Click(object sender, RoutedEventArgs e)
+        private void OnMergeButtonClick(object sender, RoutedEventArgs e)
         {
             if (this.imageLeft == null | this.imageRight == null)
             {
@@ -201,7 +201,7 @@ namespace MangaPicMerger
             }
         }
 
-        private void Window_Drop(object sender, DragEventArgs e)
+        private void OnWindowDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
