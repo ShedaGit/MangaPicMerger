@@ -98,7 +98,7 @@ namespace MangaPicMerger
                 int width = imageLeft.Width + imageRight.Width;
 
                 Bitmap resultImage;
-                if (cbWhite.IsChecked == true || cbBlack.IsChecked == true)
+                if (barBetweenImagesWhite.IsChecked == true || barBetweenImagesBlack.IsChecked == true)
                 {
                     int sizeOfLine = int.Parse(tbSize.Text);
 
@@ -107,7 +107,7 @@ namespace MangaPicMerger
                     resultImage = new Bitmap(width + sizeOfLine, height);
 
 
-                    if (cbWhite.IsChecked == true)
+                    if (barBetweenImagesWhite.IsChecked == true)
                     {
                         using (var g = Graphics.FromImage(line))
                         {
@@ -124,7 +124,7 @@ namespace MangaPicMerger
                             g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
                         }
                     }
-                    else if (cbBlack.IsChecked == true)
+                    else if (barBetweenImagesBlack.IsChecked == true)
                     {
                         using (var g = Graphics.FromImage(line))
                         {
