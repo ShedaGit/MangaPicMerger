@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MangaPicMerger"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="700" Width="800" MinHeight="700" MinWidth="800" WindowStartupLocation="CenterScreen" AllowDrop="True" Drop="Window_Drop">
     <Grid>
+        <Border BorderThickness="1" BorderBrush="#FF000000" Margin="20,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image x:Name="ImageViewerLeft" Height="480" Width="360" Stretch="Fill"/>
+        </Border>
+
+        <Border BorderThickness="1" BorderBrush="#FF000000" Margin="0,20,20,0" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Image x:Name="ImageViewerRight" Height="480" Width="360" Stretch="Fill"/>
+        </Border>
+
+        <Label Content="New name:" Margin="20,510,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tb" Height="23" Margin="110,510,20,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2"/>
+        <Button x:Name="BrowseButton" Content="Browse" Margin="20,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BrowseButton_Click"/>
+        <Button x:Name="SwitchButton" Content="Switch" Margin="110,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SwitchButton_Click"/>
+        <Button x:Name="MergeButton" Content="Merge and Save" Margin="200,540,0,0" Height="23" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Click="MergeButton_Click"/>
+        <CheckBox x:Name="cbWhite" Content="Add white line" HorizontalAlignment="Left" Margin="20,600,0,0" VerticalAlignment="Top" TabIndex="5"/>
+        <CheckBox x:Name="cbBlack" Content="Add black line" HorizontalAlignment="Left" Margin="20,620,0,0" VerticalAlignment="Top" TabIndex="5"/>
+
+        <Label Content="Size of line:" Margin="20,570,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbSize" Text="50" Height="23" Margin="110,570,615,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2" TextAlignment="Center"/>
 
     </Grid>
 </Window>
