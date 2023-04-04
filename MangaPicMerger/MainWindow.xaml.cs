@@ -72,7 +72,7 @@ namespace MangaPicMerger
         {
             if (this.imageLeft == null | this.imageRight == null)
             {
-                MessageBox.Show("You should choose 2 images.", "Oops!", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -80,19 +80,30 @@ namespace MangaPicMerger
             Bitmap imageRight = BitmapImage2Bitmap(this.imageRight);
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Images (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png";
-            ImageFormat format = ImageFormat.Png;
-            sfd.FileName = "picture.png";
+            sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
+            sfd.FileName = "picture";
             if (sfd.ShowDialog() == true)
             {
-                //File.WriteAllText(dlg.FileName, txtEditor.Text);
+                ImageFormat format = ImageFormat.Png;
+                string ext = Path.GetExtension(sfd.FileName);
+
+                switch (ext.ToLower())
+                {
+                    case ".jpg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".png":
+                        format = ImageFormat.Png;
+                        break;
+                    default:
+                        MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                }
 
                 int height = imageLeft.Height > imageRight.Height ? imageLeft.Height : imageRight.Height;
                 int width = imageLeft.Width + imageRight.Width;
 
                 Bitmap resultImage;
-                //= new Bitmap(width, height);
-
                 if (cbWhite.IsChecked == true || cbBlack.IsChecked == true)
                 {
                     int sizeOfLine = int.Parse(tbSize.Text);
@@ -148,24 +159,8 @@ namespace MangaPicMerger
                     }
                 }
 
-
-                //string resultImageDirectory = imagesDirectory + textBox3.Text + ".png";
-
-                string ext = System.IO.Path.GetExtension(sfd.FileName);
-                switch (ext)
-                {
-                    case ".jpg":
-                        format = ImageFormat.Jpeg;
-                        break;
-                    case ".jpeg":
-                        format = ImageFormat.Bmp;
-                        break;
-                }
                 resultImage.Save(sfd.FileName, format);
-
-
                 MessageBox.Show("Done!");
-
             }
         }
 
