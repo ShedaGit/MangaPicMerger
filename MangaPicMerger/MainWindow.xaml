@@ -16,7 +16,7 @@
         </Border>
 
         <Label Content="New name:" Margin="20,510,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <TextBox x:Name="tb" Height="23" Margin="110,510,20,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2"/>
+        <TextBox x:Name="mergedImageName" Text="picture" Height="23" Margin="110,510,20,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2"/>
         <Button x:Name="BrowseButton" Content="Browse" Margin="20,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnBrowseButtonClick"/>
         <Button x:Name="SwitchButton" Content="Switch" Margin="110,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnSwitchButtonClick"/>
         <Button x:Name="MergeButton" Content="Merge and Save" Margin="200,540,0,0" Height="23" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnMergeButtonClick"/>

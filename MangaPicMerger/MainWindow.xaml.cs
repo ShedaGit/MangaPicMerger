@@ -91,7 +91,7 @@ namespace MangaPicMerger
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
-                sfd.FileName = "picture";
+                sfd.FileName = string.IsNullOrWhiteSpace(mergedImageName.Text) ? "picture" : mergedImageName.Text;
                 if (sfd.ShowDialog() == true)
                 {
                     ImageFormat format = ImageFormat.Png;
