@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -13,7 +12,6 @@ namespace MangaPicMerger
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<string> pathsToImages = new List<string>();
         private BitmapImage imageLeft;
         private BitmapImage imageRight;
 
