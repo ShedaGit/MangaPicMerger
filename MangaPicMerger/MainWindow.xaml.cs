@@ -188,35 +188,43 @@ namespace MangaPicMerger
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (files.Length >= 2)
+                if (files.Length == 1)
+                {
+                    var position = e.GetPosition(this);
+
+                    if (position.X < ImageViewerLeft.ActualWidth && position.Y < ImageViewerLeft.ActualHeight)
+                    {
+                        imageLeft = new BitmapImage();
+                        imageLeft.BeginInit();
+                        imageLeft.UriSource = new Uri(files[0]);
+                        imageLeft.EndInit();
+                        ImageViewerLeft.Source = imageLeft;
+                    }
+                    else if (position.X > (this.ActualWidth - ImageViewerRight.ActualWidth) && position.Y < ImageViewerRight.ActualHeight)
+                    {
+                        imageRight = new BitmapImage();
+                        imageRight.BeginInit();
+                        imageRight.UriSource = new Uri(files[0]);
+                        imageRight.EndInit();
+                        ImageViewerRight.Source = imageRight;
+                    }
+                }
+                else if (files.Length == 2)
                 {
                     imageLeft = new BitmapImage();
                     imageLeft.BeginInit();
                     imageLeft.UriSource = new Uri(files[0]);
                     imageLeft.EndInit();
-                    //imageLeft.UriSource.ToString();
                     ImageViewerLeft.Source = imageLeft;
 
                     imageRight = new BitmapImage();
                     imageRight.BeginInit();
                     imageRight.UriSource = new Uri(files[1]);
                     imageRight.EndInit();
-                    //imageLeft.UriSource.ToString();
                     ImageViewerRight.Source = imageRight;
                 }
-                else
-                {
-                    MessageBox.Show("You should choose 2 images.", "Oops!", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-
-
-                // Assuming you have one file that you care about, pass it off to whatever
-                // handling code you have defined.
-
-                //HandleFileOpen(files[0]);
             }
         }
     }
