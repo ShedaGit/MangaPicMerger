@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 namespace MangaPicMerger
 {
@@ -19,6 +20,7 @@ namespace MangaPicMerger
         {
             InitializeComponent();
             this.DataContext = this;
+            barBetweenImages.SelectionChanged += OnBarBetweenImagesSelectionChanged;
         }
 
         private void OnBrowseButtonClick(object sender, RoutedEventArgs e)
@@ -114,7 +116,7 @@ namespace MangaPicMerger
                     int width = imageLeft.Width + imageRight.Width;
 
                     Bitmap resultImage;
-                    if (barBetweenImagesWhite.IsChecked == true || barBetweenImagesBlack.IsChecked == true)
+                    if (barBetweenImages.SelectedIndex > 0)
                     {
                         int sizeOfLine = int.Parse(barBetweenImagesSize.Text);
 
@@ -122,8 +124,7 @@ namespace MangaPicMerger
 
                         resultImage = new Bitmap(width + sizeOfLine, height);
 
-
-                        if (barBetweenImagesWhite.IsChecked == true)
+                        if (barBetweenImages.SelectedIndex == 1) // White
                         {
                             using (var g = Graphics.FromImage(line))
                             {
@@ -140,7 +141,7 @@ namespace MangaPicMerger
                                 g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
                             }
                         }
-                        else if (barBetweenImagesBlack.IsChecked == true)
+                        else if (barBetweenImages.SelectedIndex == 2) // Black
                         {
                             using (var g = Graphics.FromImage(line))
                             {
@@ -241,6 +242,28 @@ namespace MangaPicMerger
                     imageRight.UriSource = new Uri(files[1]);
                     imageRight.EndInit();
                     ImageViewerRight.Source = imageRight;
+                }
+            }
+        }
+
+        private void OnBarBetweenImagesSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (barBetweenImages.SelectedIndex == 0) // if "none" option is selected
+            {
+                if (barBetweenImagesSize != null)
+                {
+                    // hide the textbox and label
+                    barBetweenImagesSize.Visibility = Visibility.Collapsed; 
+                    barBetweenImagesSizeParam.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                if (barBetweenImagesSize != null)
+                {
+                    // show the textbox and label
+                    barBetweenImagesSize.Visibility = Visibility.Visible; 
+                    barBetweenImagesSizeParam.Visibility = Visibility.Visible;
                 }
             }
         }
