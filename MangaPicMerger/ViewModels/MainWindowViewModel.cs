@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Linq;
 
 namespace MangaPicMerger.ViewModels
 {
@@ -60,7 +61,7 @@ namespace MangaPicMerger.ViewModels
                 OnPropertyChanged(nameof(BarSize));
             }
         }
-        
+
         private string _mergedImageName;
         public string MergedImageName
         {
@@ -195,93 +196,95 @@ namespace MangaPicMerger.ViewModels
                 return;
             }
 
+            Bitmap resultImage = null;
+
             try
             {
                 using (Bitmap imageLeft = ImageHelper.BitmapImageToBitmap(ImageLeft))
                 using (Bitmap imageRight = ImageHelper.BitmapImageToBitmap(ImageRight))
                 {
 
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
-                sfd.FileName = string.IsNullOrWhiteSpace(MergedImageName) ? "picture" : MergedImageName;
-                if (sfd.ShowDialog() == true)
-                {
-                    ImageFormat format = ImageFormat.Png;
-                    string ext = Path.GetExtension(sfd.FileName);
-
-                    switch (ext.ToLower())
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
+                    sfd.FileName = string.IsNullOrWhiteSpace(MergedImageName) ? "picture" : MergedImageName;
+                    if (sfd.ShowDialog() == true)
                     {
-                        case ".jpg":
-                            format = ImageFormat.Jpeg;
-                            break;
-                        case ".png":
-                            format = ImageFormat.Png;
-                            break;
-                        default:
-                            MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
-                            return;
-                    }
+                        ImageFormat format = ImageFormat.Png;
+                        string ext = Path.GetExtension(sfd.FileName);
 
-                    int height = imageLeft.Height > imageRight.Height ? imageLeft.Height : imageRight.Height;
-                    int width = imageLeft.Width + imageRight.Width;
-
-                    Bitmap resultImage;
-                    if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) != 0)
-                    {
-                        int sizeOfLine = BarSize;
-
-                        Bitmap line = new Bitmap(sizeOfLine, Math.Max(imageLeft.Height, imageRight.Height));
-
-                        resultImage = new Bitmap(width + sizeOfLine, height);
-
-                        if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) == 1) // White
+                        switch (ext.ToLower())
                         {
-                            using (var g = Graphics.FromImage(line))
+                            case ".jpg":
+                                format = ImageFormat.Jpeg;
+                                break;
+                            case ".png":
+                                format = ImageFormat.Png;
+                                break;
+                            default:
+                                MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                                return;
+                        }
+
+                        int height = imageLeft.Height > imageRight.Height ? imageLeft.Height : imageRight.Height;
+                        int width = imageLeft.Width + imageRight.Width;
+
+                        if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) != 0)
+                        {
+                            int sizeOfLine = BarSize;
+
+                            Bitmap line = new Bitmap(sizeOfLine, Math.Max(imageLeft.Height, imageRight.Height));
+
+                            resultImage = new Bitmap(width + sizeOfLine, height);
+
+                            if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) == 1) // White
                             {
-                                using (SolidBrush brush = new SolidBrush(System.Drawing.Color.White))
+                                using (var g = Graphics.FromImage(line))
                                 {
-                                    g.FillRectangle(brush, 0, 0, line.Width, line.Height);
+                                    using (SolidBrush brush = new SolidBrush(System.Drawing.Color.White))
+                                    {
+                                        g.FillRectangle(brush, 0, 0, line.Width, line.Height);
+                                    }
+                                }
+
+                                using (var g = Graphics.FromImage(resultImage))
+                                {
+                                    g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
+                                    g.DrawImage(line, imageLeft.Width, 0);
+                                    g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
                                 }
                             }
+                            else if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) == 2) // Black
+                            {
+                                using (var g = Graphics.FromImage(line))
+                                {
+                                    using (SolidBrush brush = new SolidBrush(System.Drawing.Color.Black))
+                                    {
+                                        g.FillRectangle(brush, 0, 0, line.Width, line.Height);
+                                    }
+                                }
+
+                                using (var g = Graphics.FromImage(resultImage))
+                                {
+                                    g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
+                                    g.DrawImage(line, imageLeft.Width, 0);
+                                    g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            resultImage = new Bitmap(width, height);
 
                             using (var g = Graphics.FromImage(resultImage))
                             {
                                 g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                                g.DrawImage(line, imageLeft.Width, 0);
-                                g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
+                                g.DrawImage(imageRight, imageLeft.Width, 0, imageRight.Width, imageRight.Height);
                             }
                         }
-                        else if (BarBetweenImagesOptions.IndexOf(SelectedBarBetweenImagesOption) == 2) // Black
-                        {
-                            using (var g = Graphics.FromImage(line))
-                            {
-                                using (SolidBrush brush = new SolidBrush(System.Drawing.Color.Black))
-                                {
-                                    g.FillRectangle(brush, 0, 0, line.Width, line.Height);
-                                }
-                            }
 
-                            using (var g = Graphics.FromImage(resultImage))
-                            {
-                                g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                                g.DrawImage(line, imageLeft.Width, 0);
-                                g.DrawImage(imageRight, imageLeft.Width + line.Width, 0, imageRight.Width, imageRight.Height);
-                            }
-                        }
+                        resultImage.Save(sfd.FileName, format);
+                        MessageBox.Show("Done!");
                     }
-                    else
-                    {
-                        resultImage = new Bitmap(width, height);
-
-                        using (var g = Graphics.FromImage(resultImage))
-                        {
-                            g.DrawImage(imageLeft, 0, 0, imageLeft.Width, imageLeft.Height);
-                            g.DrawImage(imageRight, imageLeft.Width, 0, imageRight.Width, imageRight.Height);
-                        }
-                    }
-
-                    resultImage.Save(sfd.FileName, format);
-                    MessageBox.Show("Done!");
                 }
             }
             catch (Exception ex)
@@ -293,6 +296,14 @@ namespace MangaPicMerger.ViewModels
                 else
                 {
                     MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            finally
+            {
+                if (resultImage != null)
+                {
+                    resultImage.Dispose();
+                    resultImage = null;
                 }
             }
         }
