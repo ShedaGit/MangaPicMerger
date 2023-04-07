@@ -9,6 +9,11 @@ namespace MangaPicMerger.Helpers
     {
         public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
+            if (bitmapImage == null)
+            {
+                throw new ArgumentNullException(nameof(bitmapImage));
+            }
+
             using (MemoryStream outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
@@ -21,11 +26,23 @@ namespace MangaPicMerger.Helpers
 
         public static BitmapImage LoadBitmapImage(string filePath)
         {
-            var image = new BitmapImage();
-            image.BeginInit();
-            image.UriSource = new Uri(filePath);
-            image.EndInit();
-            return image;
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentNullException(nameof(filePath));
+            }
+
+            try
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.UriSource = new Uri(filePath);
+                image.EndInit();
+                return image;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to load bitmap image from file '{filePath}'", ex);
+            }
         }
     }
 }
