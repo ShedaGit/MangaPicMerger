@@ -34,14 +34,7 @@ namespace MangaPicMerger.ViewModels
                 _selectedBarBetweenImagesOption = value;
                 OnPropertyChanged(nameof(SelectedBarBetweenImagesOption));
 
-                if (SelectedBarBetweenImagesOption == "None")
-                {
-                    BarBetweenImagesVisibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    BarBetweenImagesVisibility = Visibility.Visible;
-                }
+                BarBetweenImagesVisibility = SelectedBarBetweenImagesOption == "None" ? Visibility.Collapsed : Visibility.Visible;
             }
         }
 
