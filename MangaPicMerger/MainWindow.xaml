@@ -17,9 +17,9 @@
 
         <Label Content="New name:" Margin="20,510,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="mergedImageName" Text="picture" Height="23" Margin="110,510,20,0" TextWrapping="Wrap"  VerticalAlignment="Top" TabIndex="2"/>
-        <Button x:Name="BrowseButton" Content="Browse" Margin="20,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnBrowseButtonClick"/>
-        <Button x:Name="SwitchButton" Content="Switch" Margin="110,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnSwitchButtonClick"/>
-        <Button x:Name="MergeButton" Content="Merge and Save" Margin="200,540,0,0" Height="23" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top" Click="OnMergeButtonClick"/>
+        <Button Content="Browse" Command="{Binding BrowseCommand}" Margin="20,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Switch" Command="{Binding SwitchCommand}" Margin="110,540,0,0" Height="23" Width="75" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="Merge and Save" Command="{Binding MergeCommand}" Margin="200,540,0,0" Height="23" Width="150" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <ComboBox ItemsSource="{Binding BarBetweenImagesOptions}" SelectedItem="{Binding SelectedBarBetweenImagesOption}" Margin="155,572,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="110"/>
         <Label Content="Line between images:" Margin="20,570,0,0" Height="30" Width="125" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox x:Name="barBetweenImagesSize" Text="50" Height="22" Width="70" Margin="280,572,0,0" TextWrapping="Wrap" VerticalAlignment="Top" TabIndex="2" TextAlignment="Center" VerticalContentAlignment="Center" Visibility="{Binding BarBetweenImagesVisibility}" HorizontalAlignment="Left"/>
