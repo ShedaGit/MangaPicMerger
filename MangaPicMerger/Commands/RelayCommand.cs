@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace MangaPicMerger.ViewModels
+namespace MangaPicMerger.Commands
 {
     public class RelayCommand : ICommand
     {
