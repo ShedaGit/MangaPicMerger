@@ -7,7 +7,7 @@ namespace MangaPicMerger.Helpers
 {
     public static class ImageHelper
     {
-        public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
+        public static Bitmap BitmapImageToBitmap(BitmapImage bitmapImage)
         {
             if (bitmapImage == null)
             {

@@ -197,8 +197,9 @@ namespace MangaPicMerger.ViewModels
 
             try
             {
-                Bitmap imageLeft = ImageHelper.BitmapImage2Bitmap(ImageLeft);
-                Bitmap imageRight = ImageHelper.BitmapImage2Bitmap(ImageRight);
+                using (Bitmap imageLeft = ImageHelper.BitmapImageToBitmap(ImageLeft))
+                using (Bitmap imageRight = ImageHelper.BitmapImageToBitmap(ImageRight))
+                {
 
                 SaveFileDialog sfd = new SaveFileDialog();
                 sfd.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg";
