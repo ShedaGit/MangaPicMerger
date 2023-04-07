@@ -156,7 +156,7 @@ namespace MangaPicMerger.ViewModels
                     }
                     else
                     {
-                        MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
             }
@@ -192,7 +192,7 @@ namespace MangaPicMerger.ViewModels
         {
             if (ImageLeft == null | ImageRight == null)
             {
-                MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Not enough images to merge. You should choose 2 images.", "Selection Required", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -221,7 +221,7 @@ namespace MangaPicMerger.ViewModels
                                 format = ImageFormat.Png;
                                 break;
                             default:
-                                MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                                MessageBox.Show("Invalid format selected.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Warning);
                                 return;
                         }
 
@@ -283,7 +283,7 @@ namespace MangaPicMerger.ViewModels
                         }
 
                         resultImage.Save(sfd.FileName, format);
-                        MessageBox.Show("Done!");
+                        MessageBox.Show("Done!", "Success", MessageBoxButton.OK, MessageBoxImage.None);
                     }
                 }
             }
