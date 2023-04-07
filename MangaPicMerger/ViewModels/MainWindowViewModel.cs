@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -86,7 +89,46 @@ namespace MangaPicMerger.ViewModels
 
         private void Browse(object obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                OpenFileDialog dlg = new OpenFileDialog();
+                dlg.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg|All Files (*.*)|*.*";
+                dlg.RestoreDirectory = true;
+                dlg.Multiselect = true;
+
+                if (dlg.ShowDialog() == true)
+                {
+                    if (dlg.FileNames.Length == 2)
+                    {
+                        var imageLeft = new BitmapImage();
+                        imageLeft.BeginInit();
+                        imageLeft.UriSource = new Uri(dlg.FileNames[0]);
+                        imageLeft.EndInit();
+                        ImageLeft = imageLeft;
+
+                        var imageRight = new BitmapImage();
+                        imageRight.BeginInit();
+                        imageRight.UriSource = new Uri(dlg.FileNames[1]);
+                        imageRight.EndInit();
+                        ImageRight = imageRight;
+                    }
+                    else
+                    {
+                        MessageBox.Show("You should choose 2 images.", "Warning!", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException || ex is IOException)
+                {
+                    MessageBox.Show("Operation cancelled by user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
         private void Switch(object obj)
