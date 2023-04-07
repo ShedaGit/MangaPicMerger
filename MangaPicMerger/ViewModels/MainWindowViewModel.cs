@@ -1,4 +1,5 @@
-﻿using MangaPicMerger.Helpers;
+﻿using MangaPicMerger.Commands;
+using MangaPicMerger.Helpers;
 using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
@@ -15,17 +16,66 @@ namespace MangaPicMerger.ViewModels
 {
     class MainWindowViewModel : INotifyPropertyChanged
     {
+        #region Properties
         private BitmapImage _imageLeft;
+        public BitmapImage ImageLeft
+        {
+            get => _imageLeft;
+            set
+            {
+                _imageLeft = value;
+                OnPropertyChanged(nameof(ImageLeft));
+            }
+        }
+
         private BitmapImage _imageRight;
+        public BitmapImage ImageRight
+        {
+            get => _imageRight;
+            set
+            {
+                _imageRight = value;
+                OnPropertyChanged(nameof(ImageRight));
+            }
+        }
+
         private int _selectedBarIndex;
+        public int SelectedBarIndex
+        {
+            get => _selectedBarIndex;
+            set
+            {
+                _selectedBarIndex = value;
+                OnPropertyChanged(nameof(SelectedBarIndex));
+            }
+        }
+
         private int _barSize;
+        public int BarSize
+        {
+            get => _barSize;
+            set
+            {
+                _barSize = value;
+                OnPropertyChanged(nameof(BarSize));
+            }
+        }
+        
         private string _mergedImageName;
+        public string MergedImageName
+        {
+            get => _mergedImageName;
+            set
+            {
+                _mergedImageName = value;
+                OnPropertyChanged(nameof(MergedImageName));
+            }
+        }
 
         private readonly ReadOnlyObservableCollection<string> _barBetweenImagesOptions = new ReadOnlyObservableCollection<string>(new ObservableCollection<string> { "None", "White", "Black" });
         public ReadOnlyObservableCollection<string> BarBetweenImagesOptions => _barBetweenImagesOptions;
 
         private string _selectedBarBetweenImagesOption;
-
         public string SelectedBarBetweenImagesOption
         {
             get => _selectedBarBetweenImagesOption;
@@ -49,15 +99,17 @@ namespace MangaPicMerger.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+        #endregion
+
+        #region Commands
 
         public ICommand BrowseCommand { get; private set; }
         public ICommand SwitchCommand { get; private set; }
         public ICommand MergeCommand { get; private set; }
+
+        #endregion
+
+        #region Constructor
 
         public MainWindowViewModel()
         {
@@ -66,55 +118,20 @@ namespace MangaPicMerger.ViewModels
             MergeCommand = new RelayCommand(Merge);
         }
 
-        public BitmapImage ImageLeft
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
-            get => _imageLeft;
-            set
-            {
-                _imageLeft = value;
-                OnPropertyChanged(nameof(ImageLeft));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        public BitmapImage ImageRight
-        {
-            get => _imageRight;
-            set
-            {
-                _imageRight = value;
-                OnPropertyChanged(nameof(ImageRight));
-            }
-        }
+        #endregion
 
-        public int SelectedBarIndex
-        {
-            get => _selectedBarIndex;
-            set
-            {
-                _selectedBarIndex = value;
-                OnPropertyChanged(nameof(SelectedBarIndex));
-            }
-        }
-
-        public int BarSize
-        {
-            get => _barSize;
-            set
-            {
-                _barSize = value;
-                OnPropertyChanged(nameof(BarSize));
-            }
-        }
-
-        public string MergedImageName
-        {
-            get => _mergedImageName;
-            set
-            {
-                _mergedImageName = value;
-                OnPropertyChanged(nameof(MergedImageName));
-            }
-        }
+        #region Command Methods
 
         private void Browse(object obj)
         {
@@ -266,5 +283,7 @@ namespace MangaPicMerger.ViewModels
                 }
             }
         }
+
+        #endregion
     }
 }
