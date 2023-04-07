@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -16,6 +17,21 @@ namespace MangaPicMerger.ViewModels
         private int _selectedBarIndex;
         private int _barSize;
         private string _mergedImageName;
+
+        private readonly ReadOnlyObservableCollection<string> _barBetweenImagesOptions = new ReadOnlyObservableCollection<string>(new ObservableCollection<string> { "None", "White", "Black" });
+        public ReadOnlyObservableCollection<string> BarBetweenImagesOptions => _barBetweenImagesOptions;
+
+        private string _selectedBarBetweenImagesOption;
+
+        public string SelectedBarBetweenImagesOption
+        {
+            get => _selectedBarBetweenImagesOption;
+            set
+            {
+                _selectedBarBetweenImagesOption = value;
+                OnPropertyChanged(nameof(SelectedBarBetweenImagesOption));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
