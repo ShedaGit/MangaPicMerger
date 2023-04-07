@@ -178,9 +178,9 @@ namespace MangaPicMerger.ViewModels
 
         private void Switch(object obj)
         {
-            var bitmap = ImageRight;
+            var bitmapImage = ImageRight;
             ImageRight = ImageLeft;
-            ImageLeft = bitmap;
+            ImageLeft = bitmapImage;
         }
 
         #endregion
