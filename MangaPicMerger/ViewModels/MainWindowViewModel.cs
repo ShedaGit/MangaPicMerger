@@ -133,6 +133,8 @@ namespace MangaPicMerger.ViewModels
 
         #region Command Methods
 
+        #region Browse
+
         private void Browse(object obj)
         {
             try
@@ -168,12 +170,20 @@ namespace MangaPicMerger.ViewModels
             }
         }
 
+        #endregion
+
+        #region Switch
+
         private void Switch(object obj)
         {
             var bitmap = ImageRight;
             ImageRight = ImageLeft;
             ImageLeft = bitmap;
         }
+
+        #endregion
+
+        #region Merge
 
         private void Merge(object obj)
         {
@@ -283,6 +293,8 @@ namespace MangaPicMerger.ViewModels
                 }
             }
         }
+
+        #endregion
 
         #endregion
     }
