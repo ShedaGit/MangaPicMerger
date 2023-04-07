@@ -140,7 +140,7 @@ namespace MangaPicMerger.ViewModels
             try
             {
                 OpenFileDialog dlg = new OpenFileDialog();
-                dlg.Filter = "PNG Files (*.png)|*.png|JPEG Files (*.jpg)|*.jpg|All Files (*.*)|*.*";
+                dlg.Filter = "Image Files (*.jpg;*.jpeg;*.png;*.webp)|*.jpg;*.jpeg;*.png;*.webp|All Files (*.*)|*.*";
                 dlg.RestoreDirectory = true;
                 dlg.Multiselect = true;
 
