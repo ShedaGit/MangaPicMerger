@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace MangaPicMerger.ViewModels
@@ -21,9 +23,15 @@ namespace MangaPicMerger.ViewModels
             }
         }
 
+        public ICommand BrowseCommand { get; private set; }
+        public ICommand SwitchCommand { get; private set; }
+        public ICommand MergeCommand { get; private set; }
+
         public MainWindowViewModel()
         {
-            
+            BrowseCommand = new RelayCommand(Browse);
+            SwitchCommand = new RelayCommand(Switch);
+            MergeCommand = new RelayCommand(Merge);
         }
 
         public BitmapImage ImageLeft
@@ -74,6 +82,21 @@ namespace MangaPicMerger.ViewModels
                 _mergedImageName = value;
                 OnPropertyChanged(nameof(MergedImageName));
             }
+        }
+
+        private void Browse(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Switch(object obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Merge(object obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }
