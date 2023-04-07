@@ -1,4 +1,5 @@
-﻿using MangaPicMerger.ViewModels;
+﻿using MangaPicMerger.Helpers;
+using MangaPicMerger.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -14,7 +15,7 @@ namespace MangaPicMerger
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-                    }
+        }
 
         private void OnWindowDrop(object sender, DragEventArgs e)
         {
@@ -22,40 +23,38 @@ namespace MangaPicMerger
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-                if (files.Length == 1)
+                try
                 {
-                    var position = e.GetPosition(this);
+                    if (files.Length == 1)
+                    {
+                        var position = e.GetPosition(this);
 
-                    if (position.X < ImageViewerLeft.ActualWidth && position.Y < ImageViewerLeft.ActualHeight)
-                    {
-                        imageLeft = new BitmapImage();
-                        imageLeft.BeginInit();
-                        imageLeft.UriSource = new Uri(files[0]);
-                        imageLeft.EndInit();
-                        ImageViewerLeft.Source = imageLeft;
+                        // If we need to load only in the picture field,
+                        // we can use this to find the center of the element and,
+                        // based on the actual width and height of the element,
+                        // find its position in the application.
+                        //
+                        // var leftImageCenter = ImageViewerLeft.TransformToVisual(this).Transform(new Point(0, 0));
+                        // var rightImageCenter = ImageViewerRight.TransformToVisual(this).Transform(new Point(0, 0));
+
+                        if (position.X < this.ActualWidth / 2 && position.Y < this.ActualHeight)
+                        {
+                            ImageViewerLeft.Source = ImageHelper.LoadBitmapImage(files[0]);
+                        }
+                        else if (position.X > this.ActualWidth / 2 && position.Y < this.ActualHeight)
+                        {
+                            ImageViewerRight.Source = ImageHelper.LoadBitmapImage(files[0]);
+                        }
                     }
-                    else if (position.X > (this.ActualWidth - ImageViewerRight.ActualWidth) && position.Y < ImageViewerRight.ActualHeight)
+                    else if (files.Length == 2)
                     {
-                        imageRight = new BitmapImage();
-                        imageRight.BeginInit();
-                        imageRight.UriSource = new Uri(files[0]);
-                        imageRight.EndInit();
-                        ImageViewerRight.Source = imageRight;
+                        ImageViewerLeft.Source = ImageHelper.LoadBitmapImage(files[0]);
+                        ImageViewerRight.Source = ImageHelper.LoadBitmapImage(files[1]);
                     }
                 }
-                else if (files.Length == 2)
+                catch (Exception ex)
                 {
-                    imageLeft = new BitmapImage();
-                    imageLeft.BeginInit();
-                    imageLeft.UriSource = new Uri(files[0]);
-                    imageLeft.EndInit();
-                    ImageViewerLeft.Source = imageLeft;
-
-                    imageRight = new BitmapImage();
-                    imageRight.BeginInit();
-                    imageRight.UriSource = new Uri(files[1]);
-                    imageRight.EndInit();
-                    ImageViewerRight.Source = imageRight;
+                    MessageBox.Show("Error occurred: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
