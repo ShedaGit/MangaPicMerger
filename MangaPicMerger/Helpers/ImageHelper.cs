@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Media.Imaging;
 
@@ -16,6 +17,15 @@ namespace MangaPicMerger.Helpers
 
                 return new Bitmap(outStream);
             }
+        }
+
+        public static BitmapImage LoadBitmapImage(string filePath)
+        {
+            var image = new BitmapImage();
+            image.BeginInit();
+            image.UriSource = new Uri(filePath);
+            image.EndInit();
+            return image;
         }
     }
 }
