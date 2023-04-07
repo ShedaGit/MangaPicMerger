@@ -116,6 +116,8 @@ namespace MangaPicMerger.ViewModels
             BrowseCommand = new RelayCommand(Browse);
             SwitchCommand = new RelayCommand(Switch);
             MergeCommand = new RelayCommand(Merge);
+
+            SelectedBarBetweenImagesOption = BarBetweenImagesOptions.FirstOrDefault();
         }
 
         #endregion
