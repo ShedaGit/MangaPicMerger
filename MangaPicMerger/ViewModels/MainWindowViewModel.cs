@@ -133,7 +133,9 @@ namespace MangaPicMerger.ViewModels
 
         private void Switch(object obj)
         {
-            throw new NotImplementedException();
+            var bitmap = ImageRight;
+            ImageRight = ImageLeft;
+            ImageLeft = bitmap;
         }
 
         private void Merge(object obj)
