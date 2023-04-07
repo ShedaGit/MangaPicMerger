@@ -139,17 +139,8 @@ namespace MangaPicMerger.ViewModels
                 {
                     if (dlg.FileNames.Length == 2)
                     {
-                        var imageLeft = new BitmapImage();
-                        imageLeft.BeginInit();
-                        imageLeft.UriSource = new Uri(dlg.FileNames[0]);
-                        imageLeft.EndInit();
-                        ImageLeft = imageLeft;
-
-                        var imageRight = new BitmapImage();
-                        imageRight.BeginInit();
-                        imageRight.UriSource = new Uri(dlg.FileNames[1]);
-                        imageRight.EndInit();
-                        ImageRight = imageRight;
+                        ImageLeft = ImageHelper.LoadBitmapImage(dlg.FileNames[0]);
+                        ImageRight = ImageHelper.LoadBitmapImage(dlg.FileNames[1]);
                     }
                     else
                     {
