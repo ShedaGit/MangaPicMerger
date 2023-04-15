@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace MangaPicMerger.ViewModels
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : ViewModelBase
     {
         #region Properties
 
@@ -120,17 +120,6 @@ namespace MangaPicMerger.ViewModels
             MergeCommand = new RelayCommand(Merge);
 
             SelectedBarBetweenImagesOption = BarBetweenImagesOptions.FirstOrDefault();
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         #endregion
