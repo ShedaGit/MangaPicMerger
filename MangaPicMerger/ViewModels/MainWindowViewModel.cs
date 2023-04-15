@@ -15,9 +15,10 @@ using System.Linq;
 
 namespace MangaPicMerger.ViewModels
 {
-    class MainWindowViewModel : INotifyPropertyChanged
+    class MainWindowViewModel : ViewModelBase
     {
         #region Properties
+
         private BitmapImage _imageLeft;
         public BitmapImage ImageLeft
         {
@@ -25,7 +26,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _imageLeft = value;
-                OnPropertyChanged(nameof(ImageLeft));
+                OnPropertyChanged();
             }
         }
 
@@ -36,7 +37,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _imageRight = value;
-                OnPropertyChanged(nameof(ImageRight));
+                OnPropertyChanged();
             }
         }
 
@@ -47,7 +48,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _selectedBarIndex = value;
-                OnPropertyChanged(nameof(SelectedBarIndex));
+                OnPropertyChanged();
             }
         }
 
@@ -58,7 +59,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _barSize = value;
-                OnPropertyChanged(nameof(BarSize));
+                OnPropertyChanged();
             }
         }
 
@@ -69,7 +70,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _mergedImageName = value;
-                OnPropertyChanged(nameof(MergedImageName));
+                OnPropertyChanged();
             }
         }
 
@@ -83,7 +84,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _selectedBarBetweenImagesOption = value;
-                OnPropertyChanged(nameof(SelectedBarBetweenImagesOption));
+                OnPropertyChanged();
 
                 BarBetweenImagesVisibility = SelectedBarBetweenImagesOption == "None" ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -96,7 +97,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _barBetweenImagesVisibility = value;
-                OnPropertyChanged(nameof(BarBetweenImagesVisibility));
+                OnPropertyChanged();
             }
         }
 
@@ -119,17 +120,6 @@ namespace MangaPicMerger.ViewModels
             MergeCommand = new RelayCommand(Merge);
 
             SelectedBarBetweenImagesOption = BarBetweenImagesOptions.FirstOrDefault();
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
         #endregion
