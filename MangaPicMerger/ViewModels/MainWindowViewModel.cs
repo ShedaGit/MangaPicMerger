@@ -18,6 +18,7 @@ namespace MangaPicMerger.ViewModels
     class MainWindowViewModel : INotifyPropertyChanged
     {
         #region Properties
+
         private BitmapImage _imageLeft;
         public BitmapImage ImageLeft
         {
@@ -25,7 +26,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _imageLeft = value;
-                OnPropertyChanged(nameof(ImageLeft));
+                OnPropertyChanged();
             }
         }
 
@@ -36,7 +37,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _imageRight = value;
-                OnPropertyChanged(nameof(ImageRight));
+                OnPropertyChanged();
             }
         }
 
@@ -47,7 +48,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _selectedBarIndex = value;
-                OnPropertyChanged(nameof(SelectedBarIndex));
+                OnPropertyChanged();
             }
         }
 
@@ -58,7 +59,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _barSize = value;
-                OnPropertyChanged(nameof(BarSize));
+                OnPropertyChanged();
             }
         }
 
@@ -69,7 +70,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _mergedImageName = value;
-                OnPropertyChanged(nameof(MergedImageName));
+                OnPropertyChanged();
             }
         }
 
@@ -83,7 +84,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _selectedBarBetweenImagesOption = value;
-                OnPropertyChanged(nameof(SelectedBarBetweenImagesOption));
+                OnPropertyChanged();
 
                 BarBetweenImagesVisibility = SelectedBarBetweenImagesOption == "None" ? Visibility.Collapsed : Visibility.Visible;
             }
@@ -96,7 +97,7 @@ namespace MangaPicMerger.ViewModels
             set
             {
                 _barBetweenImagesVisibility = value;
-                OnPropertyChanged(nameof(BarBetweenImagesVisibility));
+                OnPropertyChanged();
             }
         }
 
